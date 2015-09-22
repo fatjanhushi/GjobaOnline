@@ -1,5 +1,10 @@
 package com.fatjoni.droid.gjobaonline;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -8,15 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.fatjoni.droid.gjobaonline.data.GjobaDbHelper;
+import com.fatjoni.droid.gjobaonline.model.Vehicle;
+import com.fatjoni.droid.gjobaonline.network.NetworkUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,7 +28,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,7 +43,14 @@ public class CheckGjobeFragment extends Fragment {
     EditText txtVin;
     @Bind(R.id.response)
     TextView mTextView;
+    @Bind(R.id.responseContainer)
+    ViewGroup responseContainer;
+    @Bind(R.id.add_to_my_vehicles)
+    Button add_to_my_vehicles;
     View rootView;
+    ProgressDialog pd;
+    String targa, vin;
+
 
     public CheckGjobeFragment() {
     }
@@ -50,115 +60,138 @@ public class CheckGjobeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_check_gjobe, container, false);
         ButterKnife.bind(this, rootView);
-
         return rootView;
     }
-
 
     @OnClick(R.id.btn_clean)
     public void clean() {
         txtPlate.setText("");
         txtVin.setText("");
+        responseContainer.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.btn_search)
     public void search() {
 
-        if (isPlateValid() && isVinValid())
-            makeVolleyRequest();
-        else if (isPlateValid())
-            Snackbar.make(rootView, "Numri i shasise nuk eshte i sakte.", Snackbar.LENGTH_LONG).show();
-        else
-            Snackbar.make(rootView, "Targa nuk eshte e sakte.", Snackbar.LENGTH_LONG).show();
+        if (isNetworkAvailable()) {
+            if (isPlateValid() && isVinValid()) {
+                NetworkTask task = new NetworkTask();
+                task.execute(NetworkUtils.REQUEST_URL);
+            } else if (isPlateValid())
+                Snackbar.make(rootView, "Numri i shasise nuk eshte i sakte.", Snackbar.LENGTH_LONG).show();
+            else
+                Snackbar.make(rootView, "Targa nuk eshte e sakte.", Snackbar.LENGTH_LONG).show();
+        } else
+            Snackbar.make(rootView, "Ju nuk jeni i lidhur ne internet.", Snackbar.LENGTH_LONG).show();
+
+        hideKeyboard();
     }
 
-    private boolean isPlateValid(){
-        String input = txtPlate.getText().toString();
-        input = input.trim();
-        input = input.replace(" ", "");
+    @OnClick(R.id.add_to_my_vehicles)
+    public void adToMyVehicles() {
+        Vehicle vehicle = new Vehicle(targa.toUpperCase(), vin.toUpperCase());
+        GjobaDbHelper gjobaDbHelper = new GjobaDbHelper(getContext());
+        gjobaDbHelper.createVehicle(vehicle);
+
+        Snackbar.make(rootView, "Automjeti eshte shtuar tek Automjetet e mia.", Snackbar.LENGTH_LONG).show();
+    }
+
+    private boolean isPlateValid() {
+        targa = txtPlate.getText().toString().replace(" ", "");
 
         boolean checkPlate = false;
-        if (input.length() == 7 && input.matches("^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}"))
+        if (targa.length() == 7 && (targa.matches("^[a-zA-Z]{2}[0-9]{3}[a-zA-Z]{2}") ||
+                (targa.matches("^[a-zA-Z]{2}[0-9]{4}[a-zA-Z]"))))
             checkPlate = true;
 
         return checkPlate;
     }
 
-    private boolean isVinValid(){
-        String input = txtVin.getText().toString();
-        input = input.trim();
-        input = input.replace(" ", "");
+    private boolean isVinValid() {
+        vin = txtVin.getText().toString().replace(" ", "");
 
         boolean checkVin = false;
-        if (input.length() == 17)
+        if (vin.length() == 17)
             checkVin = true;
 
-        return checkVin ;
+        return checkVin;
     }
 
-    private void makeVolleyRequest(){
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        final String url = "http://www.asp.gov.al/index.php/sherbime/kontrolloni-gjobat-tuaja";
-
-        //myVIN: ZAR93200001150366
-        //myPLATE: AA016FJ
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Document doc = Jsoup.parse(response);
-                        Elements data = doc.select("td[style]");
-                        if (data.size() > 0) {
-                            Log.d("data object returned", data.toString());
-                            Element elementNrGjobave = data.get(0);
-                            String stringNrGjobave = elementNrGjobave.text();
-
-                            Element elementVleraTotal = data.get(1);
-                            String stringVleraTotal = elementVleraTotal.text();
-
-                            Element elementShkeljet = data.get(2);
-                            String stringShkeljet = elementShkeljet.text();
-
-                            Element elementPershkrimet = data.get(3);
-                            String stringPershkrimet = elementPershkrimet.text();
-
-                            response = "Nr.Gjobave: " + stringNrGjobave + "\n" +
-                                    "Vlera Total: " + stringVleraTotal + "\n" +
-                                    "Shkeljet: " + stringShkeljet + "\n" +
-                                    "Pershkrimet: " + stringPershkrimet;
-
-                            mTextView.setText(response);
-
-                        } else {
-                            Snackbar.make(rootView, "Nuk u gjet automjet me kete targe dhe nr. shasie. Provoni perseri.", Snackbar.LENGTH_LONG).show();
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mTextView.setText("That didn't work!");
-            }
-        }) {//shton argumentat per metoden POST gjate kerkeses
-            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("plate", txtPlate.getText().toString());
-                params.put("vin", txtVin.getText().toString());
-                return params;
-            }
-
-            ;
-        };
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    private class NetworkTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pd = new ProgressDialog(getContext());
+            pd.setMessage("Ju lutem prisni...");
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            HashMap<String, String> parametrat = new HashMap<>();
+            parametrat.put("plate", targa);
+            parametrat.put("vin", vin);
+
+            NetworkUtils networkUtils = new NetworkUtils();
+            String s = networkUtils.performPostCall(params[0], parametrat);
+
+            return s;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s != null) {
+                Document doc = Jsoup.parse(s);
+                Elements data = doc.select("td[style]");
+                if (data.size() > 0) {
+                    Log.d("data object returned", data.toString());
+                    Element elementNrGjobave = data.get(0);
+                    String stringNrGjobave = elementNrGjobave.text();
+
+                    Element elementVleraTotal = data.get(1);
+                    String stringVleraTotal = elementVleraTotal.text();
+
+                    Element elementShkeljet = data.get(2);
+                    String stringShkeljet = elementShkeljet.text();
+
+                    Element elementPershkrimet = data.get(3);
+                    String stringPershkrimet = elementPershkrimet.text();
+
+                    s = "Nr.Gjobave: " + stringNrGjobave + "\n" +
+                            "Vlera Total: " + stringVleraTotal + "\n" +
+                            "Shkeljet: " + stringShkeljet + "\n" +
+                            "Pershkrimet: " + stringPershkrimet;
+
+                    mTextView.setText(s);
+                    responseContainer.setVisibility(View.VISIBLE);
+                } else {
+                    Snackbar.make(rootView, "Nuk u gjet automjet me kete targe dhe nr. shasie.", Snackbar.LENGTH_LONG).show();
+                }
+
+            }
+            pd.dismiss();
+        }
+
+
     }
 }

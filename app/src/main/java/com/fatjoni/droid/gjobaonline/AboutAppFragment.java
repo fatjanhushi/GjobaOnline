@@ -8,12 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by me on 9/12/2015.
+ * Created by me on 9/18/2015.
  */
-public class CheckedVehiclesFragment extends Fragment {
+public class AboutAppFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-      return inflater.inflate(R.layout.fragment_checked_vehicles, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_about_app, container, false);
+        return rootView;
     }
 }

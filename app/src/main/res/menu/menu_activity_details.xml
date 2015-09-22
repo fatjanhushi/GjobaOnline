@@ -10,4 +10,9 @@
         android:title="@string/fatjoni_com"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_item_share"
+        android:title="@string/Share"
+        bwq:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        bwq:showAsAction="ifRoom" />
 </menu>

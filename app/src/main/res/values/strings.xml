@@ -5,4 +5,25 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="item_drawer_kontrollo">Kontrollo per Gjobe</string>
+    <string name="item_drawer_automjetet">Automjetet e mia</string>
+    <string name="item_drawer_about">Rreth app</string>
+    <string name="btn_clean">PASTRO</string>
+    <string name="btn_search">KERKO</string>
+    <string name="txt_input_plate">Targa</string>
+    <string name="txt_input_vin">Nr. Shasise</string>
+    <string name="btn_add_to_my_vehicles">SHTO TE AUTOMJETET E MIA</string>
+    <string name="Share">Share</string>
+    <string name="text_no_vehicles">Nuk keni shtuar automjet!\nShto automjet pas kontrollit te pare.</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="shpernda_app">Shpernda App</string>
+    <string name="fatjoni_com">fatjoni.com</string>
+    <string name="str_about_app">Ky app eshte pa pagese dhe ben te mundur kontrollin me lehtesi te gjobave te automjeteve.\n
+        Ky NUK eshte aplikacion zyretar i miratuar nga Ministria Puneve te Brendshme dhe nuk permban te dhena per drejtuesit e automjeteve.\n
+        Te dhenat terhiqen direkt nga faqja zyretare e Policise se Shtetit Shqiptar duke derguar nje kerkese elektronike.\n
+        Aplikacioni thjesht proceson kerkesen dhe afishon te dhenat tek perdoruesi dhe nuk do te ruaj kurre te dhenat e perdoruesit ne vendndodhje tjeter pervec se ne pajisjen mobile te perdoruesit.\n
+        Qellimi i realizimit te ketij app eshte njoftimi i perdoruesit ne rast se ka gjobe te pa pagurar. Prandaj mbani te instaluar kete app dhe mos e fshini pasi keni kontrolluar per gjobe sepse do te njoftoheni menjehere nqs merrni nje gjobe, duke bere keshtu pagesen brenda afatit per te perfituar dhe zbritje nga gjoba.\n
+        Kjo feature eshte akoma ne ndertim dhe do te publikohet ne versionin e ri te ketij app.</string>
+    <string name="banner_ad_unit_id">ca-app-pub-1837256325017145/7927131817</string>
+    <string name="interstitial_ad_unit">ca-app-pub-1837256325017145/7890105811</string>
 </resources>

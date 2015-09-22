@@ -5,33 +5,18 @@ package com.fatjoni.droid.gjobaonline.model;
  */
 public class Vehicle {
     private int _id;
-    private String brand, model, vin, plate;
+    private String vin, plate;
     private boolean myVehicle;
 
     //Constructors
-    public Vehicle(String brand, String model, String vin, String plate, boolean myVehicle) {
-        this.brand = brand;
-        this.model = model;
-        this.vin = vin;
-        this.plate = plate;
-        this.myVehicle = myVehicle;
-    }
 
-    public Vehicle(String vin, String plate, boolean myVehicle) {
-        this.vin = vin;
+    public Vehicle(String plate, String vin) {
         this.plate = plate;
-        this.myVehicle = myVehicle;
-    }
-
-    public Vehicle(String vin, String plate) {
         this.vin = vin;
-        this.plate = plate;
-        this.myVehicle = false;
     }
     //end Constructors
 
     //public methods
-
 
     public int getId() {
         return _id;
@@ -39,22 +24,6 @@ public class Vehicle {
 
     public void setId(int _id) {
         this._id = _id;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
     }
 
     public String getVin() {
@@ -73,11 +42,4 @@ public class Vehicle {
         this.plate = plate;
     }
 
-    public boolean isMyVehicle() {
-        return myVehicle;
-    }
-
-    public void setMyVehicle(boolean mVehicle) {
-        this.myVehicle = mVehicle;
-    }
 }
