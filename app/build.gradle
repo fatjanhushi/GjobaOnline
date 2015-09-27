@@ -3,10 +3,7 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'MyAndroidKey'
-            keyPassword 'iPublish25apps1990keY'
-            storeFile file('E:/MyKeyStore/mKeyStore.jks')
-            storePassword 'iPublish25apps1990'
+           
         }
     }
     compileSdkVersion 23
