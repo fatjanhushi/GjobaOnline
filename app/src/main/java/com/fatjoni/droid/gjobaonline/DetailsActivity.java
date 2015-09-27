@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fatjoni.droid.gjobaonline.data.GjobaDbHelper;
+import com.fatjoni.droid.gjobaonline.model.Gjobe;
 import com.fatjoni.droid.gjobaonline.model.Vehicle;
 import com.fatjoni.droid.gjobaonline.network.NetworkUtils;
 import com.google.android.gms.ads.AdListener;
@@ -53,6 +54,8 @@ public class DetailsActivity extends AppCompatActivity {
     String intentStringToShare;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
+    private GjobaDbHelper dbHelper;
+    private int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +67,10 @@ public class DetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        int i = intent.getIntExtra(MESSAGE_START_DETAILS_ACTIVITY, 1);
+        i = intent.getIntExtra(MESSAGE_START_DETAILS_ACTIVITY, 1);
         //Log.d("Numri: ", ""+i);
 
-        GjobaDbHelper dbHelper = new GjobaDbHelper(DetailsActivity.this);
+        dbHelper = new GjobaDbHelper(DetailsActivity.this);
 
         Vehicle vehicle = dbHelper.getVehicle(i);
         targa = vehicle.getPlate();
@@ -82,32 +85,7 @@ public class DetailsActivity extends AppCompatActivity {
         mShareIntent.setAction(Intent.ACTION_SEND);
         mShareIntent.setType("text/plain");
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
-
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-                NavUtils.navigateUpFromSameTask(DetailsActivity.this);
-            }
-        });
-
-        requestNewInterstitial();
-
-        mAdView = (AdView) findViewById(R.id.adView);
-
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(MainActivity.DEVICE_ID)
-                        .addTestDevice(MainActivity.DEVICE_ID_GENYMOTION_NEZUS_6)
-                        .build();
-                mAdView.loadAd(adRequest);
-            }
-        }, 500);
+        loadAds();
 
     }
 
@@ -202,7 +180,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                     Element elementVleraTotal = data.get(1);
                     String stringVleraTotal = elementVleraTotal.text();
-                    vleraTotal = Double.parseDouble(stringVleraTotal.replace("LEK", "").trim());
+                    vleraTotal = Double.parseDouble(stringVleraTotal.replace("LEK", ""));
                     //Log.d("Vlera Total",""+vleraTotal);
                     intentStringToShare = "Une kisha " + nrGjobave + " gjoba me vlere " + vleraTotal +
                             " LEK pa paguar. Kontrollo edhe ti ketu: \n" +
@@ -223,6 +201,10 @@ public class DetailsActivity extends AppCompatActivity {
                     mTextView.setText(s);
                     responseContainer.setVisibility(View.VISIBLE);
 
+                    //dbHelper.createGjobe(i, nrGjobave, vleraTotal);
+                    Gjobe gjobe = new Gjobe(i, nrGjobave, vleraTotal);
+                    dbHelper.createGjobe(gjobe);
+
                 } else {
                     Snackbar.make(vehicleDetailsContainer, "Nuk u gjet automjet me kete targe dhe nr. shasie.", Snackbar.LENGTH_LONG).show();
                 }
@@ -231,6 +213,35 @@ public class DetailsActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void loadAds(){
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit));
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+                NavUtils.navigateUpFromSameTask(DetailsActivity.this);
+            }
+        });
+
+        requestNewInterstitial();
+
+        mAdView = (AdView) findViewById(R.id.adView);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice(MainActivity.DEVICE_ID)
+                        .addTestDevice(MainActivity.DEVICE_ID_GENYMOTION_NEZUS_6)
+                        .build();
+                mAdView.loadAd(adRequest);
+            }
+        }, 500);
     }
 
 }

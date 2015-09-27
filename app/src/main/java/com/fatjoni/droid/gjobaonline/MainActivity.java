@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fatjoni.droid.gjobaonline.service.MyService;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        startService(new Intent(this, MyService.class));
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,44 +50,15 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(lastClicked);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mAdView = (AdView) findViewById(R.id.adView);
+        openNeededFragment(lastClicked);
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(MainActivity.DEVICE_ID)
-                        .addTestDevice(MainActivity.DEVICE_ID_GENYMOTION_NEZUS_6)
-                        .build();
-                mAdView.loadAd(adRequest);
-            }
-        }, 500);
+        loadAd();
 
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-    }
-
-    @Override
-    protected void onResume() {
-        sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedpreferences != null) {
-            lastClicked = sharedpreferences.getInt(LAST_CLICK_NAV_MENU_ITEM, lastClicked);
-            openNeededFragment(lastClicked);
-        }
-        navigationView.setCheckedItem(lastClicked);
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        saveToPreference(lastClicked);
-        super.onPause();
-    }
 
 
     @Override
@@ -126,13 +100,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         int itemID = item.getItemId();
-        if (lastClicked != itemID && (itemID == R.id.nav_check_gjobe || itemID == R.id.nav_my_vehicles || itemID == R.id.nav_about_app)) {
-            openNeededFragment(itemID);
-
-            lastClicked = itemID;
-            saveToPreference(lastClicked);
-
-        } else if (itemID == R.id.nav_share) {
+        if (itemID == R.id.nav_share) {
             Intent mShareIntent = new Intent();
             mShareIntent.setAction(Intent.ACTION_SEND);
             mShareIntent.setType("text/plain");
@@ -140,6 +108,10 @@ public class MainActivity extends AppCompatActivity
                     " https://play.google.com/store/apps/details?id=" + getPackageName();
             mShareIntent.putExtra(Intent.EXTRA_TEXT, intentStringToShare);
             startActivity(mShareIntent);
+        } else {
+            openNeededFragment(itemID);
+
+            lastClicked = itemID;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -171,13 +143,23 @@ public class MainActivity extends AppCompatActivity
                 transaction.commit();
                 break;
         }
+
     }
 
-    private void saveToPreference(int lastClicked) {
-        sharedpreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putInt(LAST_CLICK_NAV_MENU_ITEM, lastClicked);
-        editor.apply();
+    private void loadAd() {
+        mAdView = (AdView) findViewById(R.id.adView);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice(MainActivity.DEVICE_ID)
+                        .addTestDevice(MainActivity.DEVICE_ID_GENYMOTION_NEZUS_6)
+                        .build();
+                mAdView.loadAd(adRequest);
+            }
+        }, 500);
     }
 
 }

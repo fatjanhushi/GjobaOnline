@@ -6,7 +6,6 @@ package com.fatjoni.droid.gjobaonline.model;
 public class Vehicle {
     private int _id;
     private String vin, plate;
-    private boolean myVehicle;
 
     //Constructors
 

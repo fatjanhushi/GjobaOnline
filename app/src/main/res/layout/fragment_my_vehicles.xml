@@ -13,9 +13,22 @@
         android:textColor="@color/colorEmptyScreenText"
         android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/tv_value_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_my_vehicles"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_value_total"/>
+
+
 
 </RelativeLayout>

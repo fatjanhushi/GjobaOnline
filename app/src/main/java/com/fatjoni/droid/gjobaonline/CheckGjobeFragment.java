@@ -2,8 +2,6 @@ package com.fatjoni.droid.gjobaonline;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,7 +48,8 @@ public class CheckGjobeFragment extends Fragment {
     View rootView;
     ProgressDialog pd;
     String targa, vin;
-
+    int nrGjobaTotalPerAutomjet;
+    Double vleraGjobaTotalPerAutomjet;
 
     public CheckGjobeFragment() {
     }
@@ -73,7 +72,7 @@ public class CheckGjobeFragment extends Fragment {
     @OnClick(R.id.btn_search)
     public void search() {
 
-        if (isNetworkAvailable()) {
+        if (NetworkUtils.isNetworkAvailable(getContext())) {
             if (isPlateValid() && isVinValid()) {
                 NetworkTask task = new NetworkTask();
                 task.execute(NetworkUtils.REQUEST_URL);
@@ -91,7 +90,9 @@ public class CheckGjobeFragment extends Fragment {
     public void adToMyVehicles() {
         Vehicle vehicle = new Vehicle(targa.toUpperCase(), vin.toUpperCase());
         GjobaDbHelper gjobaDbHelper = new GjobaDbHelper(getContext());
-        gjobaDbHelper.createVehicle(vehicle);
+        long vehicleId = gjobaDbHelper.createVehicle(vehicle);
+        int id = (int) vehicleId;
+        gjobaDbHelper.createGjobe(id, nrGjobaTotalPerAutomjet, vleraGjobaTotalPerAutomjet);
 
         Snackbar.make(rootView, "Automjeti eshte shtuar tek Automjetet e mia.", Snackbar.LENGTH_LONG).show();
     }
@@ -120,13 +121,6 @@ public class CheckGjobeFragment extends Fragment {
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 
@@ -167,9 +161,11 @@ public class CheckGjobeFragment extends Fragment {
                     Log.d("data object returned", data.toString());
                     Element elementNrGjobave = data.get(0);
                     String stringNrGjobave = elementNrGjobave.text();
+                    nrGjobaTotalPerAutomjet = Integer.parseInt(stringNrGjobave);
 
                     Element elementVleraTotal = data.get(1);
                     String stringVleraTotal = elementVleraTotal.text();
+                    vleraGjobaTotalPerAutomjet = Double.parseDouble(stringVleraTotal.replace("LEK", ""));
 
                     Element elementShkeljet = data.get(2);
                     String stringShkeljet = elementShkeljet.text();

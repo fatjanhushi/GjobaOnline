@@ -31,6 +31,8 @@ public class MyVehiclesFragment extends Fragment {
     RecyclerView recyclerView;
     @Bind(R.id.tv_if_no_vehicles)
     TextView textViewIfNoVehicles;
+    @Bind(R.id.tv_value_total)
+    TextView textViewValueTotal;
     View rootView;
 
     @Nullable
@@ -42,12 +44,13 @@ public class MyVehiclesFragment extends Fragment {
         GjobaDbHelper dbHelper = new GjobaDbHelper(getContext());
         ArrayList<Vehicle> vehicles = dbHelper.getAllVehicles();
 
-        if (vehicles != null && vehicles.size() > 0) {
+        Log.v("Madhesia",vehicles.size()+"");
+        if (vehicles.size() > 0) {
             textViewIfNoVehicles.setVisibility(View.GONE);
             recyclerView.setHasFixedSize(true);
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(llm);
-            RecyclerViewVehicleAdapter adapter = new RecyclerViewVehicleAdapter(vehicles);
+            RecyclerViewVehicleAdapter adapter = new RecyclerViewVehicleAdapter(vehicles, getContext());
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
@@ -60,8 +63,14 @@ public class MyVehiclesFragment extends Fragment {
                         }
                     })
             );
-        } else {
+            if (vehicles.size() == 1)
+                textViewValueTotal.setVisibility(View.GONE);
+            else
+                textViewValueTotal.setText("TOTAL: "+ dbHelper.getTotalGjobeNumber() +" GJOBA, " + dbHelper.getTotalGjobeValue()+" LEKE");
+
+        }else {
             recyclerView.setVisibility(View.GONE);
+            textViewValueTotal.setVisibility(View.GONE);
         }
 
         return rootView;
