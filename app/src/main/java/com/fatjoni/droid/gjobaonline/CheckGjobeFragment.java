@@ -165,7 +165,7 @@ public class CheckGjobeFragment extends Fragment {
 
                     Element elementVleraTotal = data.get(1);
                     String stringVleraTotal = elementVleraTotal.text();
-                    vleraGjobaTotalPerAutomjet = Double.parseDouble(stringVleraTotal.replace("LEK", ""));
+                    vleraGjobaTotalPerAutomjet = Double.parseDouble(stringVleraTotal.replace("LEK", "").replace(",",""));
 
                     Element elementShkeljet = data.get(2);
                     String stringShkeljet = elementShkeljet.text();

@@ -22,8 +22,8 @@
         Ky NUK eshte aplikacion zyretar i miratuar nga Ministria Puneve te Brendshme dhe nuk permban te dhena per drejtuesit e automjeteve.\n
         Te dhenat terhiqen direkt nga faqja zyretare e Policise se Shtetit Shqiptar duke derguar nje kerkese elektronike.\n
         Aplikacioni thjesht proceson kerkesen dhe afishon te dhenat tek perdoruesi dhe nuk do te ruaj kurre te dhenat e perdoruesit ne vendndodhje tjeter pervec se ne pajisjen mobile te perdoruesit.\n
-        Qellimi i realizimit te ketij app eshte njoftimi i perdoruesit ne rast se ka gjobe te pa pagurar. Prandaj mbani te instaluar kete app dhe mos e fshini pasi keni kontrolluar per gjobe sepse do te njoftoheni menjehere nqs merrni nje gjobe, duke bere keshtu pagesen brenda afatit per te perfituar dhe zbritje nga gjoba.\n
-        Kjo feature eshte akoma ne ndertim dhe do te publikohet ne versionin e ri te ketij app.</string>
+        Qellimi i realizimit te ketij app eshte njoftimi i perdoruesit ne rast se ka gjobe te pa pagurar edhe kur perdoruesi nuk e ka te hapur aplikacionin Gjoba Online. Prandaj mbani te instaluar kete app dhe mos e fshini pasi keni kontrolluar per gjobe sepse do te njoftoheni menjehere nqs merrni nje gjobe, duke bere keshtu pagesen brenda afatit per te perfituar dhe zbritje nga gjoba.\n
+    </string>
     <string name="banner_ad_unit_id">ca-app-pub-1837256325017145/7927131817</string>
     <string name="interstitial_ad_unit">ca-app-pub-1837256325017145/7890105811</string>
 </resources>

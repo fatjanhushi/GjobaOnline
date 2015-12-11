@@ -160,10 +160,7 @@ public class DetailsActivity extends AppCompatActivity {
             parametrat.put("plate", targa);
             parametrat.put("vin", vin);
 
-            NetworkUtils networkUtils = new NetworkUtils();
-            String s = networkUtils.performPostCall(params[0], parametrat);
-
-            return s;
+            return NetworkUtils.performPostCall(params[0], parametrat);
         }
 
         @Override
@@ -203,7 +200,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                     //dbHelper.createGjobe(i, nrGjobave, vleraTotal);
                     Gjobe gjobe = new Gjobe(i, nrGjobave, vleraTotal);
-                    dbHelper.createGjobe(gjobe);
+                    dbHelper.updateGjobe(gjobe);
 
                 } else {
                     Snackbar.make(vehicleDetailsContainer, "Nuk u gjet automjet me kete targe dhe nr. shasie.", Snackbar.LENGTH_LONG).show();
@@ -211,7 +208,6 @@ public class DetailsActivity extends AppCompatActivity {
             }
             pd.dismiss();
         }
-
 
     }
 

@@ -130,17 +130,16 @@ public class GjobaDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public long createGjobe(Gjobe gjobe){
+    public void updateGjobe(Gjobe gjobe){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(GjobaContract.GjobaEntry.COLUMN_VEHICLE_ID, gjobe.getVehicleId());
         values.put(GjobaContract.GjobaEntry.COLUMN_NR_TOTAL_PER_AUTOMJET, gjobe.getNrTotalPerAutomjet());
         values.put(GjobaContract.GjobaEntry.COLUMN_VLERA_TOTAL_PER_AUTOMJET, gjobe.getVleraTotalPerAutomjet());
 
-        long id = db.insert(GjobaContract.GjobaEntry.TABLE_NAME, null, values);
+        final String whereClause = GjobaContract.GjobaEntry.COLUMN_VEHICLE_ID + "=" + gjobe.getVehicleId();
+        db.update(GjobaContract.GjobaEntry.TABLE_NAME, values, whereClause, null);
         db.close();
-        return id;
     }
 
     public ArrayList<Gjobe> getAllGjoba() {
