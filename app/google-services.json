@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "339919575410",
+    "firebase_url": "https://gjoba-online.firebaseio.com",
+    "project_id": "gjoba-online",
+    "storage_bucket": "gjoba-online.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339919575410:android:3e32c00424e255ce",
+        "android_client_info": {
+          "package_name": "com.fatjoni.droid.gjobaonline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "339919575410-85m2imo3icrrpsm83osu2ffu6du20fno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fatjoni.droid.gjobaonline",
+            "certificate_hash": "2CE7F7F107325BDEB4CADF990FAC8A1CDEC9B913"
+          }
+        },
+        {
+          "client_id": "339919575410-sao32kp8i480033jnp2da1l20bcgsh71.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "339919575410-roe0qjrbgtc0mb109qq9m1ga5bnorvor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNLzcYk-w8RcUhUcNcSkw9yRIAJM_KezI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

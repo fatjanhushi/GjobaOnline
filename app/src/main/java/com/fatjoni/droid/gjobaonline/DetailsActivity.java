@@ -26,6 +26,7 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -47,12 +48,9 @@ public class DetailsActivity extends AppCompatActivity {
     TextView mTextView;
     ProgressDialog pd;
     private String targa, vin;
-    private ShareActionProvider mShareActionProvider;
     private Intent mShareIntent;
-    private int nrGjobave;
-    private Double vleraTotal;
     String intentStringToShare;
-    private AdView mAdView;
+    private NativeExpressAdView adView;
     private InterstitialAd mInterstitialAd;
     private GjobaDbHelper dbHelper;
     private int i;
@@ -100,8 +98,8 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void requestNewInterstitial() {
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(MainActivity.DEVICE_ID_GENYMOTION_NEZUS_6)
-                .addTestDevice(MainActivity.DEVICE_ID)
+                .addTestDevice(MainActivity.DEVICE_ID_I9100)
+                .addTestDevice(MainActivity.DEVICE_ID_LGD850)
                 .build();
 
         mInterstitialAd.loadAd(adRequest);
@@ -116,7 +114,7 @@ public class DetailsActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.menu_item_share);
 
         // Get its ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
         // Connect the dots: give the ShareActionProvider its Share Intent
         if (mShareActionProvider != null) {
@@ -143,7 +141,6 @@ public class DetailsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     private class NetworkTask extends AsyncTask<String, Void, String> {
         @Override
@@ -173,15 +170,15 @@ public class DetailsActivity extends AppCompatActivity {
                     //Log.d("data object returned", data.toString());
                     Element elementNrGjobave = data.get(0);
                     String stringNrGjobave = elementNrGjobave.text();
-                    nrGjobave = Integer.parseInt(stringNrGjobave);
+                    int nrGjobave = Integer.parseInt(stringNrGjobave);
 
                     Element elementVleraTotal = data.get(1);
-                    String stringVleraTotal = elementVleraTotal.text();
-                    vleraTotal = Double.parseDouble(stringVleraTotal.replace("LEK", ""));
+                    String stringVleraTotal = elementVleraTotal.text().replace(",","");
+                    Double vleraTotal = Double.parseDouble(stringVleraTotal.replace("LEK", ""));
                     //Log.d("Vlera Total",""+vleraTotal);
                     intentStringToShare = "Une kisha " + nrGjobave + " gjoba me vlere " + vleraTotal +
                             " LEK pa paguar. Kontrollo edhe ti ketu: \n" +
-                            " https://play.google.com/store/apps/details?id=" + getPackageName();
+                            " https://st732.app.goo.gl/Q8OH";
                     mShareIntent.putExtra(Intent.EXTRA_TEXT, intentStringToShare);
 
                     Element elementShkeljet = data.get(2);
@@ -223,21 +220,25 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        requestNewInterstitial();
+        int max = 4, min = 1, randNumber = min + (int) (Math.random() * ((max - min) + 1));
 
-        mAdView = (AdView) findViewById(R.id.adView);
+        if (randNumber == 1) {
+            requestNewInterstitial();
+        }
+
+        adView = (NativeExpressAdView) findViewById(R.id.nativeAdView);
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(MainActivity.DEVICE_ID)
-                        .addTestDevice(MainActivity.DEVICE_ID_GENYMOTION_NEZUS_6)
+                AdRequest request = new AdRequest.Builder()
+                        .addTestDevice(MainActivity.DEVICE_ID_I9100)
+                        .addTestDevice(MainActivity.DEVICE_ID_LGD850)
                         .build();
-                mAdView.loadAd(adRequest);
+                adView.loadAd(request);
             }
-        }, 500);
+        }, 300);
     }
 
 }

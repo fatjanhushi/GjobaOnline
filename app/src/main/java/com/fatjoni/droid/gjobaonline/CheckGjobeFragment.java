@@ -145,8 +145,7 @@ public class CheckGjobeFragment extends Fragment {
             parametrat.put("plate", targa);
             parametrat.put("vin", vin);
 
-            NetworkUtils networkUtils = new NetworkUtils();
-            String s = networkUtils.performPostCall(params[0], parametrat);
+            String s = NetworkUtils.performPostCall(params[0], parametrat);
 
             return s;
         }

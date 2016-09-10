@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -14,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by me on 9/22/2015.
  */
 public class NetworkUtils {
-    public static final String REQUEST_URL = "http://www.asp.gov.al/index.php/sherbime/kontrolloni-gjobat-tuaja";
+    public static final String REQUEST_URL = "https://www.asp.gov.al/index.php/sherbime/kontrolloni-gjobat-tuaja";
 
     public NetworkUtils() {
     }
@@ -71,6 +69,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
+        //Log.d("Response HTMl",response);
         return response;
     }
 
@@ -98,29 +97,4 @@ public class NetworkUtils {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public static boolean isOfficialWebsiteReachable()
-    {
-        try {
-            //make a URL to a known source
-            URL url = new URL("http://www.asp.gov.al");
-
-            //open a connection to that source
-            HttpURLConnection urlConnect = (HttpURLConnection)url.openConnection();
-
-            //trying to retrieve data from the source. If there
-            //is no connection, this line will fail
-            Object objData = urlConnect.getContent();
-
-        } catch (UnknownHostException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return false;
-        }
-        catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
 }

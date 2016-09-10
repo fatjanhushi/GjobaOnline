@@ -23,14 +23,12 @@ import com.google.android.gms.ads.AdView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private NavigationView navigationView;
     private Toolbar toolbar;
-    private Fragment fragment;
     private static int lastClicked = R.id.nav_check_gjobe;
     private SharedPreferences sharedpreferences;
     public static final String LAST_CLICK_NAV_MENU_ITEM = "LAST_CLICKED_ITEM";
-    public static final String DEVICE_ID = "605C9D109BD6BC5D68A431986B59BBD3";
-    public static final String DEVICE_ID_GENYMOTION_NEZUS_6 = "26A429A4EEC6FB3CF42FB2F8F0D97363";
+    public static final String DEVICE_ID_I9100 = "98E463DED05B421E4BFBEE5DAE49A162";
+    public static final String DEVICE_ID_LGD850 = "27CE9DC8C5DD14DE28F6A461E460D99B";
     private AdView mAdView;
 
     @Override
@@ -46,10 +44,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setCheckedItem(lastClicked);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (itemID) {
             case R.id.nav_check_gjobe:
-                fragment = new CheckGjobeFragment();
+                Fragment fragment = new CheckGjobeFragment();
                 transaction.replace(R.id.contentPanel, fragment);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 toolbar.setTitle(R.string.item_drawer_kontrollo);
@@ -154,8 +152,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(MainActivity.DEVICE_ID)
-                        .addTestDevice(MainActivity.DEVICE_ID_GENYMOTION_NEZUS_6)
+                        .addTestDevice(MainActivity.DEVICE_ID_I9100)
+                        .addTestDevice(MainActivity.DEVICE_ID_LGD850)
                         .build();
                 mAdView.loadAd(adRequest);
             }
