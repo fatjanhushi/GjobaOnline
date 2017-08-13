@@ -1,94 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/tv_plate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/txt_input_plate" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/tv_vin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/txt_input_vin" />
-        </android.support.design.widget.TextInputLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_clean"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:theme="@style/AppTheme.Button"
-                android:text="@string/btn_clean" />
-
-            <Button
-                android:id="@+id/btn_search"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:theme="@style/AppTheme.Button"
-                android:text="@string/btn_search" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/responseContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                card_view:cardCornerRadius="2dp"
-                card_view:cardElevation="2dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/response"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/text_targa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="5dp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp"/>
+                    android:hint="@string/txt_input_plate" />
+            </android.support.design.widget.TextInputLayout>
 
-            </android.support.v7.widget.CardView>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/add_to_my_vehicles"
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/text_vin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/txt_input_vin" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_add_to_my_vehicles"
-                android:theme="@style/AppTheme.Button"/>
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_pastro"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_clean"
+                    android:theme="@style/AppTheme.Button" />
+
+                <Button
+                    android:id="@+id/btn_kerko"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="@string/btn_search"
+                    android:theme="@style/AppTheme.Button" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/result_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <TextView
+                        android:id="@+id/resultText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:textStyle="bold"
+                        tools:text="Vlera e gjobes" />
+
+                </android.support.v7.widget.CardView>
+
+                <Button
+                    android:id="@+id/btn_save_to_db"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_add_to_my_vehicles"
+                    android:theme="@style/AppTheme.Button" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
+    </ScrollView>
+</layout>
 
-    </LinearLayout>
-</ScrollView>

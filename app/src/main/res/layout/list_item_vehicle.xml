@@ -1,48 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view_item"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    card_view:cardCornerRadius="2dp"
-    card_view:cardElevation="2dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <data>
+
+        <variable
+            name="gjobe"
+            type="com.fatjoni.droid.gjobaonline.model.Gjobe" />
+
+        <variable
+            name="vehicle"
+            type="com.fatjoni.droid.gjobaonline.model.Vehicle" />
+
+        <variable
+            name="click_listener"
+            type="android.view.View.OnClickListener" />
+    </data>
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="5dp"
+        android:onClick="@{click_listener}"
+        app:specialTag="@{vehicle}"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardElevation="2dp">
 
-        <TextView
-            android:id="@+id/tv_plate_display"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_vin_display"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_plate_display" />
+            <TextView
+                android:id="@+id/tv_plate_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{vehicle.plate}"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                tools:text="AA016FJ" />
 
-        <TextView
-            android:id="@+id/tv_gjobat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_vin_display"
-            android:textColor="@color/colorAccent"
-            android:text="(Kliko per detajet)"/>
+            <TextView
+                android:id="@+id/tv_vin_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_plate_display"
+                android:text="@{String.valueOf(vehicle.vin)}"
+                tools:text="ZAR93200001150366" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/ic_car"
-            android:tint="@color/colorAccent" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_gjobat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_vin_display"
+                android:text="@{String.valueOf(gjobe.vlera) + ' ' + 'l' + 'e' + 'k' + 'e'}"
+                android:textColor="@color/colorAccent" />
 
-</android.support.v7.widget.CardView>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@mipmap/ic_car" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>

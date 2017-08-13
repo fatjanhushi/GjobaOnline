@@ -22,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by me on 9/22/2015.
  */
 public class NetworkUtils {
-    public static final String REQUEST_URL = "https://www.asp.gov.al/index.php/sherbime/kontrolloni-gjobat-tuaja";
+
 
     public NetworkUtils() {
     }

@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_if_no_vehicles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/text_no_vehicles"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorEmptyScreenText"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/tv_value_total"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_my_vehicles"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_value_total"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_if_no_vehicles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:text="@string/text_no_vehicles"
+            android:textColor="@color/colorEmptyScreenText"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_value_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_my_vehicles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_value_total"
+            app:layoutManager="LinearLayoutManager" />
 
 
-
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

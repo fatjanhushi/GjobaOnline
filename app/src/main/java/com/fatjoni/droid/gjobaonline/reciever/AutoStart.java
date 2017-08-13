@@ -13,9 +13,6 @@ import com.fatjoni.droid.gjobaonline.service.MyService;
 public class AutoStart extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            context.startService(new Intent(context, MyService.class));
-        }
+        context.startService(new Intent(context, MyService.class));
     }
 }
